@@ -1,0 +1,32 @@
+Cache_de_matrix <- function(x = matrix()) {
+  inverso <- NULL
+  aplicador<- function(y) {
+    x <<- y
+    
+  }
+  receptor <- function() x
+  Aplica.Inverso <- function(inverso) inverso <<- inverso
+  Recibe.Inverso <- function() inverso
+  list(aplicador = aplicador,
+       receptor = receptor,
+       Aplica.Inverso = Aplica.Inverso,
+       Recibe.Inverso = Recibe.Inverso)
+}
+
+cacheSolve <- function(x, ...) {
+  inve <- x$Recibe.Inverso()
+  if (!is.null(inve)) {
+    message("Preparando cache")
+    return(inve)
+  }
+  mat <- x$receptor()
+  inve <- solve(mat, ...)
+  x$Aplica.Inverso(inve)
+  inve
+}
+
+my_matrix <- Cache_de_matrix(matrix(1:4, 2, 2))
+my_matrix$receptor()
+
+my_matrix$Recibe.Inverso()
+cacheSolve(my_matrix)
